@@ -209,7 +209,7 @@ app.post('/api/v1/meeting/new', async (req, res, next) => {
             dataObject: {
                 appName: 'Core Team Gateway',
                 routeName: 'Add Meeting Route',
-                data: 'Meeting Added SuccessFully'
+                data: newMeeting._id
             }
         });
     } catch (err) {

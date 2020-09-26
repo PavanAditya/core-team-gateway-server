@@ -12,6 +12,10 @@ const meetingSchema = new mongoose.Schema({
     meetingLink: {
         type: String,
         required: true
+    },
+    addedBy: {
+        type: String,
+        default: ''
     }
 });
 
