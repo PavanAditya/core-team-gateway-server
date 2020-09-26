@@ -8,6 +8,10 @@ const userSchema = new mongoose.Schema({
     aboNum: {
         type: String,
         default: null
+    },
+    admin: {
+        type: Boolean,
+        default: false
     }
 });
 
