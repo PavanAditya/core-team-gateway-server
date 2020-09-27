@@ -182,6 +182,51 @@ app.get('/api/v1/meetings', async (req, res, next) => {
 });
 // ! Get All Meetings
 
+// ! Get Single Meeting\
+// ? ${BAE_URL}/api/v1/meeting/:id
+app.get('/api/v1/meeting/:id', async (req, res, next) => {
+    try {
+        const allMeetings = await meetingSchema.find({
+            _id: req.params.id
+        });
+        if (!allMeetings) {
+            res.status(404).send({
+                message: 'Meeting Not Found.',
+                status: 404,
+                dataObject: {
+                    appName: 'Core Team Gateway',
+                    routeName: 'Single Meeting Details Route',
+                    data: 'No Meetings found.'
+                }
+            });
+            return;
+        }
+        res.status(200).send({
+            message: 'Meetings Fetched Successfully',
+            status: 200,
+            dataObject: {
+                appName: 'Core Team Gateway',
+                routeName: 'Single Meeting Details Route',
+                data: allMeetings
+            }
+        });
+    } catch (err) {
+        res.status(500).send({
+            message: 'Meetings Fetch Error.',
+            status: 500,
+            dataObject: {
+                appName: 'Core Team Gateway',
+                routeName: 'Single Meeting Details Route',
+                data: {
+                    errorMessage: 'Meetings fetch failed at DB level.',
+                    error: `${err}`
+                }
+            }
+        });
+    }
+});
+// ! Get Single Meeting
+
 // ! Add New Meeting
 // ? ${BAE_URL}/api/v1/meeting/new
 app.post('/api/v1/meeting/new', async (req, res, next) => {
@@ -286,7 +331,8 @@ app.post('/api/v1/attendee/new/:refferedId', async (req, res) => {
         const refferedUser = await userSchema.find({
             aboNum: req.params.refferedId
         });
-        if (!refferedUser) {
+        console.log(refferedUser);
+        if (!refferedUser[0]) {
             res.status(403).send({
                 message: 'Attendee Add Error.',
                 status: 403,
@@ -318,7 +364,7 @@ app.post('/api/v1/attendee/new/:refferedId', async (req, res) => {
                 return;
             }
             res.status(200).send({
-                message: 'Attendee Add Error.',
+                message: 'Attendee Add Successful.',
                 status: 200,
                 dataObject: {
                     appName: 'Core Team Gateway',
